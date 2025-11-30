@@ -1,4 +1,4 @@
-package com.cupons.models;
+package com.cupons.models.categoria;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

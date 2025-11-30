@@ -1,8 +1,7 @@
-package com.cupons.models;
+package com.cupons.models.comercio;
 
+import com.cupons.models.categoria.Categoria;
 import jakarta.persistence.*;
-
-import java.util.Date;
 
 @Entity
 @Table(name = "comercio")

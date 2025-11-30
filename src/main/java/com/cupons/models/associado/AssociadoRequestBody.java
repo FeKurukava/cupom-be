@@ -1,57 +1,59 @@
-package com.cupons.models;
+package com.cupons.models.associado;
 
-
-import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 
 import java.util.Date;
-import java.util.List;
 
-@Table(name = "associado")
-@Entity
-public class Associado {
+public class AssociadoRequestBody {
 
-    @Id
-    @Column(name = "cpf_associado")
-    private Integer cpfAssociado;
+    @NotBlank(message = "O CPF é obrigatório.")
+    @Pattern(regexp = "\\d{11}", message = "O CPF deve conter exatamente 11 dígitos numéricos.")
+    private String cpfAssociado;
 
-    @OneToMany(mappedBy = "associado", fetch = FetchType.LAZY)
-    private List<CupomAssociado> cupomAssociados;
-
-    @Column(name = "nom_associado", length = 40)
+    @NotBlank(message = "O nome é obrigatório.")
+    @Size(max = 40, message = "O nome pode ter no máximo 40 caracteres.")
     private String nomAssociado;
 
-    @Column(name = "dtn_associado")
+    @NotNull(message = "A data de nascimento é obrigatória.")
     private Date dtnAssociado;
 
-    @Column(name = "end_associado", length = 40)
+    @NotBlank(message = "O endereço é obrigatório.")
+    @Size(max = 40)
     private String endAssociado;
 
-    @Column(name = "bai_associado", length = 30)
+    @NotBlank(message = "O bairro é obrigatório.")
+    @Size(max = 30)
     private String baiAssociado;
 
-    @Column(name = "cep_associado", length = 8)
+    @NotBlank(message = "O CEP é obrigatório.")
+    @Pattern(regexp = "\\d{8}", message = "O CEP deve conter 8 dígitos numéricos.")
     private String cepAssociado;
 
-    @Column(name = "cid_associado", length = 40)
+    @NotBlank(message = "A cidade é obrigatória.")
+    @Size(max = 40)
     private String cidAssociado;
 
-    @Column(name = "uf_associado", length = 2)
+    @NotBlank(message = "A UF é obrigatória.")
+    @Pattern(regexp = "^[A-Z]{2}$", message = "A UF deve conter duas letras maiúsculas.")
     private String ufAssociado;
 
-    @Column(name = "cel_associado", length = 15)
+    @NotBlank(message = "O telefone é obrigatório.")
+    @Size(max = 15)
     private String celAssociado;
 
-    @Column(name = "email_associado", length = 50)
+    @NotBlank(message = "O e-mail é obrigatório.")
+    @Email(message = "E-mail inválido.")
+    @Size(max = 50)
     private String emailAssociado;
 
-    @Column(name = "sen_associado", length = 20)
+    @NotBlank(message = "A senha é obrigatória.")
+    @Size(min = 6, message = "A senha deve ter pelo menos 6 caracteres.")
     private String senAssociado;
 
-    public Associado(){
+    public AssociadoRequestBody(){
     }
-    public Associado(Integer cpfAssociado,List<CupomAssociado>cupomAssociados, String nomAssociado, Date dtnAssociado, String endAssociado, String baiAssociado, String cepAssociado, String cidAssociado, String ufAssociado, String celAssociado, String emailAssociado, String senAssociado) {
+    public AssociadoRequestBody(String cpfAssociado, String nomAssociado, Date dtnAssociado, String endAssociado, String baiAssociado, String cepAssociado, String cidAssociado, String ufAssociado, String celAssociado, String emailAssociado, String senAssociado) {
         this.cpfAssociado = cpfAssociado;
-        this.cupomAssociados = cupomAssociados;
         this.nomAssociado = nomAssociado;
         this.dtnAssociado = dtnAssociado;
         this.endAssociado = endAssociado;
@@ -63,18 +65,11 @@ public class Associado {
         this.emailAssociado = emailAssociado;
         this.senAssociado = senAssociado;
     }
-    public Integer getCpfAssociado() {
+    public String getCpfAssociado() {
         return cpfAssociado;
     }
-    public void setCpfAssociado(Integer cpfAssociado) {
+    public void setCpfAssociado(String cpfAssociado) {
         this.cpfAssociado = cpfAssociado;
-    }
-
-    public List<CupomAssociado> getCupomAssociados() {
-        return cupomAssociados;
-    }
-    public void setCupomAssociados(List<CupomAssociado> cupomAssociados) {
-        this.cupomAssociados = cupomAssociados;
     }
 
     public String getNomAssociado() {
@@ -156,3 +151,4 @@ public class Associado {
         this.senAssociado = senAssociado;
     }
 }
+

@@ -1,5 +1,6 @@
-package com.cupons.models;
+package com.cupons.models.cupom;
 
+import com.cupons.models.comercio.Comercio;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
