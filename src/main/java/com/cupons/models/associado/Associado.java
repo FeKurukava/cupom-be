@@ -50,7 +50,7 @@ public class Associado {
 
     public Associado(){
     }
-    public Associado(Integer cpfAssociado,List<CupomAssociado>cupomAssociados, String nomAssociado, Date dtnAssociado, String endAssociado, String baiAssociado, String cepAssociado, String cidAssociado, String ufAssociado, String celAssociado, String emailAssociado, String senAssociado) {
+    public Associado(String cpfAssociado,List<CupomAssociado>cupomAssociados, String nomAssociado, Date dtnAssociado, String endAssociado, String baiAssociado, String cepAssociado, String cidAssociado, String ufAssociado, String celAssociado, String emailAssociado, String senAssociado) {
         this.cpfAssociado = cpfAssociado;
         this.cupomAssociados = cupomAssociados;
         this.nomAssociado = nomAssociado;
@@ -67,7 +67,7 @@ public class Associado {
     public String getCpfAssociado() {
         return cpfAssociado;
     }
-    public void setCpfAssociado(Integer cpfAssociado) {
+    public void setCpfAssociado(String cpfAssociado) {
         this.cpfAssociado = cpfAssociado;
     }
 

@@ -1,18 +1,18 @@
 package com.cupons.utils;
 
 public class DocumentoUtils {
-    public static Long limparDocumentoRetornarLong(String documento) {
+    public static String limparDocumento(String documento) {
         if (documento == null) {
             return null;
         }
 
-        String somenteNumeros = documento.replaceAll("[^0-9]", "");
+        String documentoFormatado = documento.replaceAll("[^0-9]", "");
 
-        if (somenteNumeros.isEmpty()) {
+        if (documentoFormatado.isEmpty()) {
             throw new IllegalArgumentException("Documento não possui dígitos numéricos.");
         }
 
-        return Long.parseLong(somenteNumeros);
+        return documentoFormatado;
     }
 
 

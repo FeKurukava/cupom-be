@@ -9,7 +9,7 @@ public class Comercio {
 
     @Id
     @Column(name = "cnpj_comercio")
-    private Integer cnpjComercio;
+    private String cnpjComercio;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_categoria", nullable = false)
@@ -45,10 +45,10 @@ public class Comercio {
     @Column(name = "sen_comercio", length = 20)
     private String senComercio;
 
-    public Comercio(){
+    public Comercio() {
     }
 
-    public Comercio(Integer cnpjComercio, String razSocialComercio, String nomFantasiaComercio, String endComercio, String baiComercio, String cepComercio, String cidComercio, String ufComercio, String conComercio, String emailComercio, String senComercio){
+    public Comercio(String cnpjComercio, String razSocialComercio, String nomFantasiaComercio, String endComercio, String baiComercio, String cepComercio, String cidComercio, String ufComercio, String conComercio, String emailComercio, String senComercio, Categoria categoria) {
         this.cnpjComercio = cnpjComercio;
         this.razSocialComercio = razSocialComercio;
         this.nomFantasiaComercio = nomFantasiaComercio;
@@ -60,18 +60,29 @@ public class Comercio {
         this.conComercio = conComercio;
         this.emailComercio = emailComercio;
         this.senComercio = senComercio;
+        this.categoria = new Categoria();
     }
 
-    public Integer getCnpjComercio() {
+    public Categoria getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(Categoria categoria) {
+        this.categoria = categoria;
+    }
+
+    public String getCnpjComercio() {
         return cnpjComercio;
     }
-    public void setCnpjComercio(Integer cnpjComercio) {
+
+    public void setCnpjComercio(String cnpjComercio) {
         this.cnpjComercio = cnpjComercio;
     }
 
     public String getRazSocialComercio() {
         return razSocialComercio;
     }
+
     public void setRazSocialComercio(String razSocialComercio) {
         this.razSocialComercio = razSocialComercio;
     }
@@ -79,6 +90,7 @@ public class Comercio {
     public String getNomFantasiaComercio() {
         return nomFantasiaComercio;
     }
+
     public void setNomFantasiaComercio(String nomFantasiaComercio) {
         this.nomFantasiaComercio = nomFantasiaComercio;
     }
@@ -86,6 +98,7 @@ public class Comercio {
     public String getEndComercio() {
         return endComercio;
     }
+
     public void setEndComercio(String endComercio) {
         this.endComercio = endComercio;
     }
@@ -93,6 +106,7 @@ public class Comercio {
     public String getBaiComercio() {
         return baiComercio;
     }
+
     public void setBaiComercio(String baiComercio) {
         this.baiComercio = baiComercio;
     }
@@ -100,6 +114,7 @@ public class Comercio {
     public String getCepComercio() {
         return cepComercio;
     }
+
     public void setCepComercio(String cepComercio) {
         this.cepComercio = cepComercio;
     }
@@ -107,6 +122,7 @@ public class Comercio {
     public String getCidComercio() {
         return cidComercio;
     }
+
     public void setCidComercio(String cidComercio) {
         this.cidComercio = cidComercio;
     }
@@ -114,6 +130,7 @@ public class Comercio {
     public String getUfComercio() {
         return ufComercio;
     }
+
     public void setUfComercio(String ufComercio) {
         this.ufComercio = ufComercio;
     }
@@ -121,6 +138,7 @@ public class Comercio {
     public String getConComercio() {
         return conComercio;
     }
+
     public void setConComercio(String conComercio) {
         this.conComercio = conComercio;
     }
@@ -128,6 +146,7 @@ public class Comercio {
     public String getEmailComercio() {
         return emailComercio;
     }
+
     public void setEmailComercio(String emailComercio) {
         this.emailComercio = emailComercio;
     }
@@ -135,6 +154,7 @@ public class Comercio {
     public String getSenComercio() {
         return senComercio;
     }
+
     public void setSenComercio(String senComercio) {
         this.senComercio = senComercio;
     }

@@ -6,7 +6,7 @@ import com.cupons.models.auth.LoginResponse;
 import com.cupons.repository.comercio.ComercioRepository;
 import org.springframework.stereotype.Service;
 
-import static com.cupons.utils.DocumentoUtils.limparDocumentoRetornarInteger;
+import static com.cupons.utils.DocumentoUtils.limparDocumento;
 
 @Service
 public class LoginComercianteService {
@@ -23,7 +23,7 @@ public class LoginComercianteService {
 
         String cnpj = request.getCpf();
 
-        Comercio c = comercioRepository.findById(limparDocumentoRetornarInteger(cnpj))
+        Comercio c = comercioRepository.findById(limparDocumento(cnpj))
                 .orElseThrow(() -> new IllegalArgumentException("Comerciante não encontrado."));
 
         if (!c.getSenComercio().equals(request.getSenha())) {

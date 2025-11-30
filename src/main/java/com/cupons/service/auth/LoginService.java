@@ -6,7 +6,7 @@ import com.cupons.models.auth.LoginResponse;
 import com.cupons.repository.associado.AssociadoRepository;
 import org.springframework.stereotype.Service;
 
-import static com.cupons.utils.DocumentoUtils.limparDocumentoRetornarInteger;
+import static com.cupons.utils.DocumentoUtils.limparDocumento;
 
 @Service
 public class LoginService {
@@ -21,9 +21,8 @@ public class LoginService {
 
     public LoginResponse login(LoginRequest request) {
 
-        Integer cpf = limparDocumentoRetornarInteger(request.getCpf());
 
-        Associado associado = associadoRepository.findById(cpf)
+        Associado associado = associadoRepository.findById(limparDocumento(request.getCpf()))
                 .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado."));
 
         if (!associado.getSenAssociado().equals(request.getSenha())) {

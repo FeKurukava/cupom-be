@@ -19,7 +19,7 @@ public class AssociadoService {
 
         Associado associado = new Associado();
 
-        associado.setCpfAssociado(DocumentoUtils.limparDocumentoRetornarLong(requestBody.getCpfAssociado()));
+        associado.setCpfAssociado(DocumentoUtils.limparDocumento(requestBody.getCpfAssociado()));
         associado.setNomAssociado(requestBody.getNomAssociado());
         associado.setDtnAssociado(requestBody.getDtnAssociado());
         associado.setEndAssociado(requestBody.getEndAssociado());
