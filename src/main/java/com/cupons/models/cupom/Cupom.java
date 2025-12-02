@@ -37,10 +37,13 @@ public class Cupom {
     @Column(name = "per_desc_cupom")
     private BigDecimal perDescCupom;
 
+    @Column(name = "qnt_cupom")
+    private Integer qntCupom;
+
     public Cupom(){
     }
 
-    public Cupom(String numCupom, List<CupomAssociado>cupomAssociados, String tituloCupom, Date dtaEmissaoCupom, Date dtaInicioCupom, Date dtaTerminoCupom, BigDecimal perDescCupom) {
+    public Cupom(String numCupom, List<CupomAssociado>cupomAssociados, String tituloCupom, Date dtaEmissaoCupom, Date dtaInicioCupom, Date dtaTerminoCupom, BigDecimal perDescCupom, Integer qntCupom) {
         this.numCupom = numCupom;
         this.cupomAssociados = cupomAssociados;
         this.tituloCupom = tituloCupom;
@@ -48,6 +51,7 @@ public class Cupom {
         this.dtaInicioCupom = dtaInicioCupom;
         this.dtaTerminoCupom = dtaTerminoCupom;
         this.perDescCupom = perDescCupom;
+        this.qntCupom = qntCupom;
     }
 
     public String getNumCupom() {
@@ -98,6 +102,20 @@ public class Cupom {
     }
     public void setPerDescCupom(BigDecimal perDescCupom) {
         this.perDescCupom = perDescCupom;
+    }
+
+    public Comercio getComercio() {
+        return comercio;
+    }
+    public void setComercio(Comercio comercio) {
+        this.comercio = comercio;
+    }
+
+    public Integer getQntCupom() {
+        return qntCupom;
+    }
+    public void setQntCupom(Integer qntCupom) {
+        this.qntCupom = qntCupom;
     }
 
 }
