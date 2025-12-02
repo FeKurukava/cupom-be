@@ -35,11 +35,18 @@ public class CupomService {
         } catch (Exception e) {
             throw new RuntimeException("Status inválido. Use: ATIVOS ou VENCIDOS.");
         }
+        List<Cupom> resultado = null;
 
-        return switch (filtro) {
-            case ATIVOS -> cupomRepository.findAtivosByCnpj(cnpjLimpo);
-            case VENCIDOS -> cupomRepository.findVencidosByCnpj(cnpjLimpo);
+
+        switch (filtro) {
+            case ATIVOS ->{
+               resultado =  cupomRepository.findAtivosByCnpj(cnpjLimpo);
+            }
+            case VENCIDOS ->{
+                resultado = cupomRepository.findVencidosByCnpj(cnpjLimpo);
+            }
         };
+        return resultado;
     }
 }
 
