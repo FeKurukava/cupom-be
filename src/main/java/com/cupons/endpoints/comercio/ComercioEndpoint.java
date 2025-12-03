@@ -58,4 +58,10 @@ public class ComercioEndpoint {
         List<CupomResponse> cupons = cupomService.listarCuponsPorCnpj(cnpj, status);
         return ResponseEntity.ok(cupons);
     }
+
+    @PostMapping("/usar-cupom")
+    public ResponseEntity<Void> usarCupom(@RequestParam String numCupom){
+        comercioService.registrarUsoCupom(numCupom);
+        return ResponseEntity.ok().build();
+    }
 }

@@ -59,4 +59,20 @@ public class CupomAssociado {
     public void setDtaUsoCupomAssociado(Date dtaUsoCupomAssociado) {
         this.dtaUsoCupomAssociado = dtaUsoCupomAssociado;
     }
+
+    public Associado getAssociado() {
+        return associado;
+    }
+
+    public void setAssociado(Associado associado) {
+        this.associado = associado;
+    }
+
+    public Cupom getCupom() {
+        return cupom;
+    }
+
+    public void setCupom(Cupom cupom) {
+        this.cupom = cupom;
+    }
 }

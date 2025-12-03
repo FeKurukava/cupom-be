@@ -4,10 +4,12 @@ import com.cupons.models.categoria.Categoria;
 import com.cupons.models.comercio.Comercio;
 import com.cupons.models.comercio.ComercioRequestBody;
 import com.cupons.models.cupom.Cupom;
+import com.cupons.models.cupom.CupomAssociado;
 import com.cupons.models.cupom.CupomRequestBody;
 import com.cupons.repository.categoria.CategoriaRepository;
 import com.cupons.repository.comercio.ComercioRepository;
 import com.cupons.repository.cupom.CupomRepository;
+import com.cupons.repository.cupom.CupomAssociadoRepository;
 import com.cupons.utils.DocumentoUtils;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
@@ -19,12 +21,14 @@ public class ComercioService {
 
     private final ComercioRepository comercioRepository;
     private final CupomRepository cupomRepository;
+    private final CupomAssociadoRepository cupomAssociadoRepository;
     private final CategoriaRepository categoriaRepository;
 
-    public ComercioService(ComercioRepository comercioRepository, CupomRepository cupomRepository, CategoriaRepository categoriaRepository) {
+    public ComercioService(ComercioRepository comercioRepository, CupomRepository cupomRepository, CategoriaRepository categoriaRepository, CupomAssociadoRepository cupomAssociadoRepository) {
         this.comercioRepository = comercioRepository;
         this.cupomRepository = cupomRepository;
         this.categoriaRepository = categoriaRepository;
+        this.cupomAssociadoRepository = cupomAssociadoRepository;
     }
 
     public void novoComercio(@Valid ComercioRequestBody requestBody) {
@@ -104,6 +108,34 @@ public class ComercioService {
         }
 
         return codigo.toString();
+    }
+
+    public void registrarUsoCupom(String numCupom) {
+        Cupom cupom = cupomRepository.findById(numCupom)
+                .orElseThrow(() -> new RuntimeException("Cupom não encontrado."));
+
+        Date hoje = new Date();
+
+        if (cupom.getDtaInicioCupom() == null || cupom.getDtaTerminoCupom() == null) {
+            throw new RuntimeException("Período do cupom inválido.");
+        }
+
+        if (hoje.before(cupom.getDtaInicioCupom())) {
+            throw new RuntimeException("Cupom ainda não está ativo.");
+        }
+
+        if (hoje.after(cupom.getDtaTerminoCupom())) {
+            throw new RuntimeException("Cupom vencido.");
+        }
+
+        CupomAssociado cupomAssociado = cupomAssociadoRepository.findFirstByCupom_NumCupomAndDtaUsoCupomAssociadoIsNull(numCupom);
+
+        if (cupomAssociado == null) {
+            throw new RuntimeException("Cupom não reservado ou já utilizado.");
+        }
+
+        cupomAssociado.setDtaUsoCupomAssociado(new Date());
+        cupomAssociadoRepository.save(cupomAssociado);
     }
 
 }
