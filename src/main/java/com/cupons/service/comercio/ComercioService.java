@@ -14,6 +14,7 @@ import com.cupons.utils.DocumentoUtils;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
 import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -63,15 +64,26 @@ public class ComercioService {
         String cnpj = DocumentoUtils.limparDocumento(cupomRequestBody.getCnpjComercio());
 
         Comercio comercio = comercioRepository.findById(cnpj)
-                    .orElseThrow(() -> new RuntimeException("Comércio não encontrado."));
+                .orElseThrow(() -> new RuntimeException("Comércio não encontrado."));
 
         validarDatas(cupomRequestBody.getDataValidadeInicio(), cupomRequestBody.getDataValidadeFim());
 
-        Cupom cupom = converterParaEntidade(cupomRequestBody, comercio);
-        cupom.setNumCupom(gerarCodigoCupom());
+        int quantidade = cupomRequestBody.getQntCupom() != null ? cupomRequestBody.getQntCupom() : 1;
+        List<Cupom> cupons = new ArrayList<>(quantidade);
 
-        cupomRepository.save(cupom);
+        for (int i = 0; i < quantidade; i++) {
+            Cupom cupom = converterParaEntidade(cupomRequestBody, comercio);
+            String codigo;
+            do {
+                codigo = gerarCodigoCupom();
+            } while (cupomRepository.existsById(codigo));
+            cupom.setNumCupom(codigo);
+            cupom.setQntCupom(1);
+            cupons.add(cupom);
         }
+
+        cupomRepository.saveAll(cupons);
+    }
 
     private Cupom converterParaEntidade(CupomRequestBody dto, Comercio comercio) {
         Cupom cupom = new Cupom();
