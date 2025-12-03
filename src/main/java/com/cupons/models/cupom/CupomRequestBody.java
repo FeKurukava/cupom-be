@@ -1,9 +1,6 @@
 package com.cupons.models.cupom;
 
-import jakarta.validation.constraints.DecimalMax;
-import jakarta.validation.constraints.DecimalMin;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.*;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -11,20 +8,21 @@ import java.util.Date;
 public class CupomRequestBody {
 
     @NotBlank(message = "O título da promoção é obrigatório.")
+    @NotNull(message = "O título da promoção é obrigatório.")
     private String tituloPromo;
 
-    @NotBlank(message = "A data de início é obrigatória.")
+    @NotNull(message = "A data de início é obrigatória.")
     private Date dataValidadeInicio;
 
-    @NotBlank(message = "A data de fim é obrigatória.")
+    @NotNull(message = "A data de fim é obrigatória.")
     private Date dataValidadeFim;
 
-    @NotBlank(message = "O desconto é obrigatório.")
+    @NotNull(message = "O desconto é obrigatório.")
     @DecimalMax(value = "100.00", message = "O desconto não pode ultrapassar 100%.")
     @DecimalMin(value = "0.01", message = "O desconto deve ser maior que zero.")
     private BigDecimal descontoPromo;
 
-    @NotBlank(message = "A quantidade de cupons é obrigatória.")
+    @NotNull(message = "A quantidade de cupons é obrigatória.")
     @Min(value = 1, message = "A quantidade mínima de cupons é 1.")
     private Integer qntCupom;
 

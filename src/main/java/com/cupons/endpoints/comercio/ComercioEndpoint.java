@@ -44,7 +44,7 @@ public class ComercioEndpoint {
     }
 
     @PostMapping("/criar-cupom")
-    public ResponseEntity<Void> criarCupom(@RequestBody CupomRequestBody cupomRequestBody) {
+    public ResponseEntity<Void> criarCupom(@RequestBody @Valid CupomRequestBody cupomRequestBody) {
         comercioService.gerarCupom(cupomRequestBody);
 
         return ResponseEntity.ok().build();
