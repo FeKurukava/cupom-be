@@ -1,20 +1,15 @@
 package com.cupons.service.cupom;
 
-import com.cupons.models.comercio.Comercio;
 import com.cupons.models.cupom.Cupom;
-import com.cupons.models.cupom.CupomRequestBody;
+import com.cupons.models.cupom.CupomResponse;
 import com.cupons.models.cupom.StatusCupom;
-import com.cupons.repository.comercio.ComercioRepository;
 import com.cupons.repository.cupom.CupomRepository;
-import com.cupons.service.comercio.ComercioService;
 import com.cupons.utils.DocumentoUtils;
-import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 @Service
 public class CupomService {
@@ -25,7 +20,7 @@ public class CupomService {
         this.cupomRepository = cupomRepository;
     }
 
-    public List<Cupom> listarCuponsPorCnpj(String cnpj, String status) {
+    public List<CupomResponse> listarCuponsPorCnpj(String cnpj, String status) {
 
         String cnpjLimpo = DocumentoUtils.limparDocumento(cnpj);
 
@@ -46,7 +41,26 @@ public class CupomService {
                 resultado = cupomRepository.findVencidosByCnpj(cnpjLimpo);
             }
         };
-        return resultado;
+        List<CupomResponse> respostas = new ArrayList<>();
+        if (resultado != null) {
+            for (Cupom c : resultado) {
+                CupomResponse r = new CupomResponse();
+                r.setNumCupom(c.getNumCupom());
+                r.setTituloCupom(c.getTituloCupom());
+                r.setDtaEmissaoCupom(c.getDtaEmissaoCupom());
+                r.setDtaInicioCupom(c.getDtaInicioCupom());
+                r.setDtaTerminoCupom(c.getDtaTerminoCupom());
+                if (c.getPerDescCupom() != null) {
+                    BigDecimal valor = new BigDecimal(c.getPerDescCupom().toString());
+                    r.setPerDescCupom(valor);
+                } else {
+                    r.setPerDescCupom(null);
+                }
+                r.setQntCupom(c.getQntCupom());
+                respostas.add(r);
+            }
+        }
+        return respostas;
     }
 }
 
