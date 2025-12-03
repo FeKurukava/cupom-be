@@ -12,6 +12,7 @@ import com.cupons.service.auth.LoginService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import java.util.List;
 
 @RestController
 @RequestMapping("/associado")
@@ -44,15 +45,15 @@ import org.springframework.web.bind.annotation.*;
     }
 
     @GetMapping("/comercios")
-    public ResponseEntity<java.util.List<ComercioResponse>> listarComercios(){
-        java.util.List<ComercioResponse> lista = associadoService.listarComercios();
+    public ResponseEntity<List<ComercioResponse>> listarComercios(){
+        List<ComercioResponse> lista = associadoService.listarComercios();
         return ResponseEntity.ok(lista);
     }
 
     @GetMapping("/comercios/{cnpj}/cupons")
-    public ResponseEntity<java.util.List<CupomResponse>> listarCuponsPorComercio(@PathVariable String cnpj, @RequestParam(required = false) String status){
+    public ResponseEntity<List<CupomResponse>> listarCuponsPorComercio(@PathVariable String cnpj, @RequestParam(required = false) String status){
         String filtro = status == null ? "ATIVOS" : status;
-        java.util.List<CupomResponse> lista = associadoService.listarCuponsPorCnpj(cnpj, filtro);
+        List<CupomResponse> lista = associadoService.listarCuponsPorCnpj(cnpj, filtro);
         return ResponseEntity.ok(lista);
     }
 
@@ -63,8 +64,8 @@ import org.springframework.web.bind.annotation.*;
     }
 
     @GetMapping("/meus-cupons")
-    public ResponseEntity<java.util.List<CupomResponse>> meusCupons(@RequestParam String cpf, @RequestParam String status){
-        java.util.List<CupomResponse> lista = associadoService.buscarCuponsAssociado(cpf, status);
+    public ResponseEntity<List<CupomResponse>> meusCupons(@RequestParam String cpf, @RequestParam String status){
+        List<CupomResponse> lista = associadoService.buscarCuponsAssociado(cpf, status);
         return ResponseEntity.ok(lista);
     }
 }
