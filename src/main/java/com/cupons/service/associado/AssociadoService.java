@@ -2,6 +2,7 @@ package com.cupons.service.associado;
 
 import com.cupons.models.associado.Associado;
 import com.cupons.models.associado.AssociadoRequestBody;
+import com.cupons.models.auth.RecuperarSenhaAssociadoRequest;
 import com.cupons.models.comercio.Comercio;
 import com.cupons.models.comercio.ComercioResponse;
 import com.cupons.models.cupom.Cupom;
@@ -140,6 +141,13 @@ public class AssociadoService {
             respostas.add(cupomResponse);
         }
         return respostas;
+    }
+
+    public void recuperarSenhaAssociado(RecuperarSenhaAssociadoRequest request){
+        String cpf = DocumentoUtils.limparDocumento(request.getCpf());
+        Associado associado = associadoRepository.findById(cpf).orElseThrow(() -> new RuntimeException("Associado não encontrado."));
+        associado.setSenAssociado(request.getNovaSenha());
+        associadoRepository.save(associado);
     }
 
 

@@ -3,6 +3,7 @@ package com.cupons.service.comercio;
 import com.cupons.models.categoria.Categoria;
 import com.cupons.models.comercio.Comercio;
 import com.cupons.models.comercio.ComercioRequestBody;
+import com.cupons.models.comercio.RecuperarSenhaComercioRequest;
 import com.cupons.models.cupom.Cupom;
 import com.cupons.models.cupom.CupomAssociado;
 import com.cupons.models.cupom.CupomRequestBody;
@@ -148,6 +149,14 @@ public class ComercioService {
 
         cupomAssociado.setDtaUsoCupomAssociado(new Date());
         cupomAssociadoRepository.save(cupomAssociado);
+    }
+
+    public void recuperarSenhaComercio(RecuperarSenhaComercioRequest request){
+        String cnpj = DocumentoUtils.limparDocumento(request.getCnpj());
+        Comercio comercio = comercioRepository.findById(cnpj)
+                .orElseThrow(() -> new RuntimeException("Comércio não encontrado."));
+        comercio.setSenComercio(request.getNovaSenha());
+        comercioRepository.save(comercio);
     }
 
 }

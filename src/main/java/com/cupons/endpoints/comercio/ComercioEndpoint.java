@@ -2,10 +2,13 @@ package com.cupons.endpoints.comercio;
 
 import com.cupons.models.comercio.ComercioLoginRequest;
 import com.cupons.models.comercio.ComercioRequestBody;
+import com.cupons.models.comercio.RecuperarSenhaComercioRequest;
+import com.cupons.models.auth.LoginResponse;
 import com.cupons.models.cupom.CupomRequestBody;
 import com.cupons.models.cupom.CupomResponse;
 import com.cupons.service.comercio.ComercioService;
 import com.cupons.service.cupom.CupomService;
+import com.cupons.service.auth.LoginComercianteService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,10 +22,12 @@ public class ComercioEndpoint {
 
     private final ComercioService comercioService;
     private final CupomService cupomService;
+    private final LoginComercianteService loginComercianteService;
 
-    public ComercioEndpoint(ComercioService comercioService, CupomService cupomService) {
+    public ComercioEndpoint(ComercioService comercioService, CupomService cupomService, LoginComercianteService loginComercianteService) {
         this.comercioService = comercioService;
         this.cupomService = cupomService;
+        this.loginComercianteService = loginComercianteService;
     }
 
     @PostMapping("/novo")
@@ -32,9 +37,9 @@ public class ComercioEndpoint {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@Valid @RequestBody ComercioLoginRequest request) {
-//        String token = comercioService.login(request.getEmail(), request.getSenha());
-        return ResponseEntity.ok("");
+    public ResponseEntity<LoginResponse> login(@Valid @RequestBody ComercioLoginRequest request) {
+        LoginResponse resposta = loginComercianteService.loginPorEmail(request);
+        return ResponseEntity.ok(resposta);
     }
 
     @PostMapping("/logout")
@@ -62,6 +67,12 @@ public class ComercioEndpoint {
     @PostMapping("/usar-cupom")
     public ResponseEntity<Void> usarCupom(@RequestParam String numCupom){
         comercioService.registrarUsoCupom(numCupom);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/recuperar-senha")
+    public ResponseEntity<Void> recuperarSenha(@RequestBody @Valid RecuperarSenhaComercioRequest request){
+        comercioService.recuperarSenhaComercio(request);
         return ResponseEntity.ok().build();
     }
 }

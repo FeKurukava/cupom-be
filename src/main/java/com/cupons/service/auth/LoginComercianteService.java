@@ -3,6 +3,7 @@ package com.cupons.service.auth;
 import com.cupons.models.comercio.Comercio;
 import com.cupons.models.auth.LoginRequest;
 import com.cupons.models.auth.LoginResponse;
+import com.cupons.models.comercio.ComercioLoginRequest;
 import com.cupons.repository.comercio.ComercioRepository;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +25,26 @@ public class LoginComercianteService {
         String cnpj = request.getCpf();
 
         Comercio c = comercioRepository.findById(limparDocumento(cnpj))
+                .orElseThrow(() -> new IllegalArgumentException("Comerciante não encontrado."));
+
+        if (!c.getSenComercio().equals(request.getSenha())) {
+            throw new IllegalArgumentException("Senha incorreta.");
+        }
+
+        String payload = String.format(
+                "{\"tipo\":\"comerciante\", \"cnpj\":\"%s\", \"email\":\"%s\", \"idUsuario\":\"%s\"}",
+                c.getCnpjComercio(),
+                c.getEmailComercio(),
+                c.getCnpjComercio()
+        );
+
+        String token = tokenService.gerarToken(payload);
+
+        return new LoginResponse(token);
+    }
+
+    public LoginResponse loginPorEmail(ComercioLoginRequest request){
+        Comercio c = comercioRepository.findByEmailComercio(request.getEmail())
                 .orElseThrow(() -> new IllegalArgumentException("Comerciante não encontrado."));
 
         if (!c.getSenComercio().equals(request.getSenha())) {
