@@ -20,7 +20,6 @@ public class LogoutEndpoint {
     @PostMapping("/logout")
     public ResponseEntity<String> logout(@RequestHeader("Authorization") String token) {
 
-        // Remover o prefixo "Bearer " caso o front envie assim
         if (token.startsWith("Bearer ")) {
             token = token.substring(7);
         }
