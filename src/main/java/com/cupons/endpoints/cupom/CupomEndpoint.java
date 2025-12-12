@@ -5,6 +5,7 @@ import com.cupons.models.cupom.CupomCadastroRequest;
 import com.cupons.models.cupom.RegistrarUsoCupomRequest;
 import com.cupons.repository.comercio.ComercioRepository;
 import com.cupons.service.cupom.CupomService;
+import com.cupons.utils.DocumentoUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,20 +25,11 @@ public class CupomEndpoint {
     @PostMapping
     public ResponseEntity<?> cadastrar(@RequestBody CupomCadastroRequest request) {
 
-        Comercio comercio = comercioRepository.findById(request.getCnpjComercio())
+        Comercio comercio = comercioRepository.findById(DocumentoUtils.limparDocumento(request.getCnpjComercio()))
                 .orElseThrow(() -> new IllegalArgumentException("Comerciante não encontrado"));
 
         cupomService.cadastrarCupons(request, comercio);
 
         return ResponseEntity.ok("Cupons gerados com sucesso.");
     }
-
-    @PostMapping("/registrar-uso")
-    public ResponseEntity<?> registrarUso(@RequestBody RegistrarUsoCupomRequest request) {
-        cupomService.registrarUso(request.getNumCupom());
-        return ResponseEntity.ok("Uso do cupom registrado com sucesso.");
-    }
-
-
-
 }

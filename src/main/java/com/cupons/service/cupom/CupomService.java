@@ -5,8 +5,6 @@ import com.cupons.models.cupom.Cupom;
 import com.cupons.models.cupom.CupomCadastroRequest;
 import com.cupons.models.cupom.CupomResponse;
 import com.cupons.models.cupom.StatusCupom;
-import com.cupons.models.cupom.CupomAssociado;
-import com.cupons.repository.cupom.CupomAssociadoRepository;
 import com.cupons.repository.cupom.CupomRepository;
 import com.cupons.utils.DocumentoUtils;
 import org.springframework.stereotype.Service;
@@ -22,14 +20,11 @@ import java.util.List;
 public class CupomService {
 
     private final CupomRepository cupomRepository;
-    private final CupomAssociadoRepository cupomAssociadoRepository;
     private static final String ALFABETO = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     private static final SecureRandom RANDOM = new SecureRandom();
 
-    public CupomService(CupomRepository cupomRepository,
-                        CupomAssociadoRepository cupomAssociadoRepository) {
+    public CupomService(CupomRepository cupomRepository) {
         this.cupomRepository = cupomRepository;
-        this.cupomAssociadoRepository = cupomAssociadoRepository;
     }
 
     public void cadastrarCupons(CupomCadastroRequest request, Comercio comercio) {
@@ -74,20 +69,6 @@ public class CupomService {
         return sb.toString();
     }
 
-    public void registrarUso(String numCupom) {
-
-        CupomAssociado ca = cupomAssociadoRepository
-                .findFirstByCupom_NumCupomAndDtaUsoCupomAssociadoIsNull(numCupom);
-
-        if (ca == null) {
-            throw new IllegalArgumentException("Cupom não encontrado, não reservado ou já utilizado.");
-        }
-
-        ca.setDtaUsoCupomAssociado(new Date());
-
-        cupomAssociadoRepository.save(ca);
-    }
-
     public List<CupomResponse> listarCuponsPorCnpj(String cnpj, String status) {
 
         String cnpjLimpo = DocumentoUtils.limparDocumento(cnpj);
@@ -96,12 +77,13 @@ public class CupomService {
         try {
             filtro = StatusCupom.valueOf(status.toUpperCase());
         } catch (Exception e) {
-            throw new RuntimeException("Status inválido. Use: ATIVOS ou VENCIDOS.");
+            throw new RuntimeException("Status inválido. Use: ATIVOS, VENCIDOS ou UTILIZADOS.");
         }
 
         List<Cupom> resultado = switch (filtro) {
             case ATIVOS -> cupomRepository.findAtivosByCnpj(cnpjLimpo);
             case VENCIDOS -> cupomRepository.findVencidosByCnpj(cnpjLimpo);
+            case UTILIZADOS -> cupomRepository.findUtilizadosByCnpj(cnpjLimpo);
         };
 
         List<CupomResponse> respostas = new ArrayList<>();

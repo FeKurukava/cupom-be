@@ -2,10 +2,11 @@ package com.cupons.endpoints.auth;
 
 import com.cupons.models.auth.LoginRequest;
 import com.cupons.models.auth.LoginResponse;
-import com.cupons.models.comercio.ComercioLoginRequest;
+import com.cupons.models.comercio.RecuperarSenhaComercioRequest;
 import com.cupons.service.auth.LoginComercianteService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/auth/comerciante")
@@ -24,9 +25,9 @@ public class LoginComercianteEndpoint {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping("/login-email")
-    public ResponseEntity<LoginResponse> loginPorEmail(@RequestBody ComercioLoginRequest request) {
-        LoginResponse response = loginComercianteService.loginPorEmail(request);
-        return ResponseEntity.ok(response);
+    @PostMapping("/recuperar-senha")
+    public ResponseEntity<Void> recuperarSenha(@RequestBody @Valid RecuperarSenhaComercioRequest request){
+        loginComercianteService.recuperarSenhaComercio(request);
+        return ResponseEntity.ok().build();
     }
 }

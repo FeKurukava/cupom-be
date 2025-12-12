@@ -142,13 +142,4 @@ public class AssociadoService {
         }
         return respostas;
     }
-
-    public void recuperarSenhaAssociado(RecuperarSenhaAssociadoRequest request){
-        String cpf = DocumentoUtils.limparDocumento(request.getCpf());
-        Associado associado = associadoRepository.findById(cpf).orElseThrow(() -> new RuntimeException("Associado não encontrado."));
-        associado.setSenAssociado(request.getNovaSenha());
-        associadoRepository.save(associado);
-    }
-
-
 }

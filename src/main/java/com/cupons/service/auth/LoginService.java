@@ -3,6 +3,7 @@ package com.cupons.service.auth;
 import com.cupons.models.associado.Associado;
 import com.cupons.models.auth.LoginRequest;
 import com.cupons.models.auth.LoginResponse;
+import com.cupons.models.auth.RecuperarSenhaAssociadoRequest;
 import com.cupons.repository.associado.AssociadoRepository;
 import org.springframework.stereotype.Service;
 
@@ -39,5 +40,12 @@ public class LoginService {
         String token = tokenService.gerarToken(payload);
 
         return new LoginResponse(token);
+    }
+
+    public void recuperarSenhaAssociado(RecuperarSenhaAssociadoRequest request) {
+        Associado associado = associadoRepository.findById(limparDocumento(request.getCpf()))
+                .orElseThrow(() -> new IllegalArgumentException("Associado não encontrado."));
+        associado.setSenAssociado(request.getNovaSenha());
+        associadoRepository.save(associado);
     }
 }

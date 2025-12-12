@@ -4,11 +4,7 @@ import com.cupons.models.comercio.ComercioResponse;
 import com.cupons.models.associado.AssociadoRequestBody;
 import com.cupons.models.cupom.CupomResponse;
 import com.cupons.models.cupom.ReservarCupomRequest;
-import com.cupons.models.auth.LoginRequest;
-import com.cupons.models.auth.LoginResponse;
-import com.cupons.models.auth.RecuperarSenhaAssociadoRequest;
 import com.cupons.service.associado.AssociadoService;
-import com.cupons.service.auth.LoginService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,32 +12,19 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/associado")
+@CrossOrigin(origins = "*")
     public class AssociadoEndpoint {
 
     private final AssociadoService associadoService;
-    private final LoginService loginService;
 
-    public AssociadoEndpoint(AssociadoService associadoService, LoginService loginService) {
+    public AssociadoEndpoint(AssociadoService associadoService) {
         this.associadoService = associadoService;
-        this.loginService = loginService;
     }
 
     @PostMapping("/novo-usuario")
     public ResponseEntity<Void> novoUsuario(@RequestBody @Valid AssociadoRequestBody associadoRequestBody){
         associadoService.novoUsuario(associadoRequestBody);
         return ResponseEntity.status(201).build();
-    }
-
-    @PostMapping("/login")
-    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request){
-        LoginResponse resposta = loginService.login(request);
-        return ResponseEntity.ok(resposta);
-    }
-
-    @PostMapping("/recuperar-senha")
-    public ResponseEntity<Void> recuperarSenha(@RequestBody @Valid RecuperarSenhaAssociadoRequest request){
-        associadoService.recuperarSenhaAssociado(request);
-        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/comercios")

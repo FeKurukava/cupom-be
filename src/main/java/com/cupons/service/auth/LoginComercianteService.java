@@ -4,6 +4,7 @@ import com.cupons.models.comercio.Comercio;
 import com.cupons.models.auth.LoginRequest;
 import com.cupons.models.auth.LoginResponse;
 import com.cupons.models.comercio.ComercioLoginRequest;
+import com.cupons.models.comercio.RecuperarSenhaComercioRequest;
 import com.cupons.repository.comercio.ComercioRepository;
 import org.springframework.stereotype.Service;
 
@@ -61,5 +62,13 @@ public class LoginComercianteService {
         String token = tokenService.gerarToken(payload);
 
         return new LoginResponse(token);
+    }
+
+    public void recuperarSenhaComercio(RecuperarSenhaComercioRequest request){
+        String cnpj = limparDocumento(request.getCnpj());
+        Comercio comercio = comercioRepository.findById(cnpj)
+                .orElseThrow(() -> new IllegalArgumentException("Comércio não encontrado."));
+        comercio.setSenComercio(request.getNovaSenha());
+        comercioRepository.save(comercio);
     }
 }

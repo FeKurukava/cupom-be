@@ -13,6 +13,10 @@ public interface CupomRepository extends JpaRepository<Cupom, String> {
         SELECT c FROM Cupom c
         WHERE c.comercio.cnpjComercio = :cnpj
           AND CURRENT_DATE BETWEEN c.dtaInicioCupom AND c.dtaTerminoCupom
+          AND NOT EXISTS (
+            SELECT 1 FROM com.cupons.models.cupom.CupomAssociado ca
+            WHERE ca.cupom.numCupom = c.numCupom
+          )
     """)
     List<Cupom> findAtivosByCnpj(String cnpj);
 
@@ -22,4 +26,14 @@ public interface CupomRepository extends JpaRepository<Cupom, String> {
           AND c.dtaTerminoCupom < CURRENT_DATE
     """)
     List<Cupom> findVencidosByCnpj(String cnpj);
+
+    @Query("""
+        SELECT DISTINCT c FROM Cupom c
+        WHERE c.comercio.cnpjComercio = :cnpj
+          AND EXISTS (
+            SELECT 1 FROM com.cupons.models.cupom.CupomAssociado ca
+            WHERE ca.cupom.numCupom = c.numCupom
+          )
+    """)
+    List<Cupom> findUtilizadosByCnpj(String cnpj);
 }
