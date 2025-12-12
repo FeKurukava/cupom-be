@@ -116,8 +116,12 @@ public class AssociadoService {
         associadoRepository.findById(cpfLimpo).orElseThrow(() -> new RuntimeException("Associado não encontrado."));
 
         List<CupomAssociado> lista;
-        if (status != null && status.equalsIgnoreCase("VENCIDOS")){
+        if (status != null && status.equalsIgnoreCase("VENCIDOS")) {
             lista = cupomAssociadoRepository.buscarVencidosPorCpf(cpfLimpo);
+
+        }else if (status != null && status.equalsIgnoreCase("UTILIZADOS")) {
+            lista = cupomAssociadoRepository.buscarUtilizadosPorCpf(cpfLimpo);
+
         } else {
             lista = cupomAssociadoRepository.buscarReservadosPorCpf(cpfLimpo);
         }

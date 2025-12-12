@@ -29,4 +29,14 @@ public interface CupomAssociadoRepository extends JpaRepository<CupomAssociado, 
         order by ca.cupom.dtaInicioCupom desc
     """)
     List<CupomAssociado> buscarVencidosPorCpf(String cpf);
+
+    @Query("""
+    select ca from CupomAssociado ca
+    where ca.associado.cpfAssociado = :cpf
+      and ca.dtaUsoCupomAssociado is not null
+    order by ca.cupom.dtaInicioCupom desc
+""")
+    List<CupomAssociado> buscarUtilizadosPorCpf(String cpf);
+
+
 }
